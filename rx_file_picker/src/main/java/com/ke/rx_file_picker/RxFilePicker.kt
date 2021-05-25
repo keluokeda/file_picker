@@ -1,9 +1,9 @@
 package com.ke.rx_file_picker
 
-import android.support.v4.app.FragmentActivity
+import androidx.fragment.app.FragmentActivity
 import io.reactivex.Observable
 
-class RxFilePicker(activity: FragmentActivity) {
+class RxFilePicker(activity: androidx.fragment.app.FragmentActivity) {
 
     private val tag = "rx_file_picker"
 
@@ -14,15 +14,16 @@ class RxFilePicker(activity: FragmentActivity) {
 
         if (fragment == null) {
             delegateFragment = DelegateFragment()
-            activity.supportFragmentManager.beginTransaction().add(delegateFragment, tag).commitNow()
+            activity.supportFragmentManager.beginTransaction().add(delegateFragment, tag)
+                .commitNow()
         } else {
             delegateFragment = fragment as DelegateFragment
         }
     }
 
 
-    fun pickFile(): Observable<PickResult> {
-
+    fun pickFile(type: String = "*/*"): Observable<PickResult> {
+        delegateFragment.type = type
         delegateFragment.start()
         return Observable.just(1)
             .flatMap {

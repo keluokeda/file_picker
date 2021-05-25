@@ -6,12 +6,12 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
-import android.support.v4.app.Fragment
+import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
 import io.reactivex.subjects.PublishSubject
 
 
-class DelegateFragment : Fragment() {
+class DelegateFragment : androidx.fragment.app.Fragment() {
 
 
     lateinit var pickResultSubject: PublishSubject<PickResult>
@@ -26,7 +26,8 @@ class DelegateFragment : Fragment() {
 
         pickResultSubject = PublishSubject.create()
 
-        val permission = ActivityCompat.checkSelfPermission(context!!, Manifest.permission.READ_EXTERNAL_STORAGE)
+        val permission =
+            ActivityCompat.checkSelfPermission(context!!, Manifest.permission.READ_EXTERNAL_STORAGE)
 
         if (permission == PackageManager.PERMISSION_GRANTED) {
             startPick()
@@ -40,7 +41,11 @@ class DelegateFragment : Fragment() {
         requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 100)
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         val grantResult = grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED
@@ -74,11 +79,12 @@ class DelegateFragment : Fragment() {
         }
     }
 
+    var type: String = "*/*"
 
     private fun startPick() {
         val intent = Intent(Intent.ACTION_GET_CONTENT)
 
-        intent.type = "*/*"
+        intent.type = type
 
         intent.addCategory(Intent.CATEGORY_OPENABLE)
 
