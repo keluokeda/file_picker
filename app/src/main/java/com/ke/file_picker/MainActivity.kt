@@ -25,7 +25,6 @@ class MainActivity : AppCompatActivity() {
 
 
 
-
         button.setOnClickListener {
 
             RxFilePicker(this)
